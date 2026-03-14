@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSpec Tasks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .task-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .task-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0c] text-slate-200 min-h-screen font-sans selection:bg-brand-500/30">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/2 -right-48 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[160px]"></div>
+    </div>
+
+    <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+        <header class="mb-12 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-brand-400 to-purple-400 bg-clip-text text-transparent">
+                OpenSpec Tasks
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl max-w-lg mx-auto leading-relaxed">
+                A streamlined task management experience powered by OpenSpec.
+            </p>
+        </header>
+
+        <section class="glass rounded-[32px] p-2 md:p-3">
+            <div class="space-y-2">
+                {% for task in tasks %}
+                <div class="task-card flex items-center justify-between p-5 rounded-2xl border border-transparent">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-lg font-medium {% if task.completed %}text-slate-500 line-through{% else %}text-white{% endif %}">
+                            {{ task.title }}
+                        </span>
+                        <span class="text-sm text-slate-500">
+                            {{ task.created_at|date:"M d • H:i" }}
+                        </span>
+                    </div>
+                    
+                    <div>
+                        {% if task.completed %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            Completed
+                        </span>
+                        {% else %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                            In Progress
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="py-20 text-center">
+                    <div class="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/50 text-slate-400">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <p class="text-slate-400 text-lg">No tasks found</p>
+                    <p class="text-slate-600 text-sm mt-1">Start adding tasks via the Django Admin</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer class="mt-12 text-center text-sm text-slate-600">
+            Powered by <span class="text-slate-500 font-medium">Django</span> & <span class="text-indigo-500 font-medium">Tailwind CSS</span>
+        </footer>
+    </main>
+</body>
+</html>
